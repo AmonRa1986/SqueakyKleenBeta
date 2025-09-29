@@ -301,6 +301,26 @@
             border-color: var(--teal-500);
         }
 
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            background-color: white;
+            transition: border-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--teal-500);
+        }
+
+        .form-group select option {
+            padding: 0.5rem;
+        }
+
         .service-label {
             display: block;
             margin-bottom: 1rem;
@@ -838,7 +858,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="service-label">I'd like info on:</label>
+                            <label class="service-label">Property Type:</label>
                             <div class="service-options">
                                 <button type="button" class="service-btn" data-service="residential">
                                     <i class="fas fa-home"></i>
@@ -854,6 +874,19 @@
                                 </button>
                             </div>
                             <input type="hidden" id="serviceType" name="serviceType">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="serviceInterest">Service Interest:</label>
+                            <select id="serviceInterest" name="serviceInterest" required>
+                                <option value="">Select a service...</option>
+                                <option value="paver-sealing">Paver Sealing (Most Valuable)</option>
+                                <option value="roof-washing">Roof Washing (High Value)</option>
+                                <option value="driveway-cleaning">Driveway Cleaning</option>
+                                <option value="house-washing">House Washing</option>
+                                <option value="multiple-services">Multiple Services</option>
+                                <option value="not-sure">Not Sure Yet</option>
+                            </select>
                         </div>
 
                         <button type="submit" class="btn-submit">
@@ -982,7 +1015,7 @@
                 e.preventDefault();
                 
                 // Basic validation
-                const requiredFields = form.querySelectorAll('input[required]');
+                const requiredFields = form.querySelectorAll('input[required], select[required]');
                 let isValid = true;
                 
                 requiredFields.forEach(field => {
@@ -995,11 +1028,24 @@
                 });
                 
                 if (!serviceTypeInput.value) {
-                    alert('Please select a service type');
+                    alert('Please select a property type');
                     isValid = false;
                 }
                 
                 if (isValid) {
+                    // Collect form data
+                    const formData = {
+                        firstName: document.getElementById('firstName').value,
+                        lastName: document.getElementById('lastName').value,
+                        phone: document.getElementById('phone').value,
+                        email: document.getElementById('email').value,
+                        propertyType: serviceTypeInput.value,
+                        serviceInterest: document.getElementById('serviceInterest').value,
+                        timestamp: new Date().toISOString()
+                    };
+                    
+                    console.log('Lead captured:', formData);
+                    
                     // Show success message
                     const successMessage = document.createElement('div');
                     successMessage.className = 'success-message';
